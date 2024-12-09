@@ -26,9 +26,17 @@ func inputToReports(content []byte) []Report {
 }
 
 func (r Report) Clean() Report {
-	last := r[0]
-	cleaned := Report{last}
-	var asc, desc []float64
+	cleaned := r
+	first := r[0]
+	second := r[1]
+	asc := false
+	desc := false
+	if first < second {
+		asc = true
+	}
+	if first > second {
+		desc = true
+	}
 
 	removeIdx := func(in []float64, idx int) []float64 {
 		var after []float64
@@ -40,28 +48,25 @@ func (r Report) Clean() Report {
 		return append(in[:idx], after...)
 	}
 
+	last := r[0]
 	for idx, v := range r[1:] {
 		d := v - last
 		absD := math.Abs(d)
 		if absD < 1 || absD > 3 {
 			cleaned = removeIdx(cleaned, idx)
+			break
 		}
 
-		if d >= 0 {
-			if len(desc) > 0 {
-				cleaned = removeIdx(cleaned, idx)
-			} else {
-				asc = append(asc, v)
-			}
-		} else {
-			if len(asc) > 0 {
-				cleaned = removeIdx(cleaned, idx)
-			} else {
-				desc = append(desc, v)
-			}
+		if d >= 0 && desc {
+			cleaned = removeIdx(cleaned, idx)
+			break
 		}
 
-		cleaned = append(cleaned, v)
+		if d < 0 && asc {
+			cleaned = removeIdx(cleaned, idx)
+			break
+		}
+
 		last = v
 	}
 
