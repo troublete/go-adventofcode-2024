@@ -1,6 +1,8 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 import _ "embed"
 
 //go:embed example.txt
@@ -56,8 +58,8 @@ func Test_SaveWithThreshold(t *testing.T) {
 	}
 
 	for rid, rep := range r {
-		if want[rid] != rep.IsSaveWithThreshold(1) {
-			t.Errorf("#%v: wanted %v, got %v", rid, want[rid], rep.IsSaveWithThreshold(1))
+		if want[rid] != rep.IsSaveWithThreshold() {
+			t.Errorf("#%v: wanted %v, got %v", rid, want[rid], rep.IsSaveWithThreshold())
 		}
 	}
 }

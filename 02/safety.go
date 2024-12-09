@@ -9,3 +9,13 @@ func safetyReport(reports []Report) int {
 	}
 	return r
 }
+
+func safetyReportWithTolerance(reports []Report) int {
+	r := 0
+	for _, rep := range reports {
+		if rep.IsSaveWithThreshold() {
+			r += 1
+		}
+	}
+	return r
+}
