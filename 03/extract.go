@@ -28,13 +28,27 @@ func Extract(in []byte) []Calc {
 	return cs
 }
 
-func Sections(in []byte) [][]byte {
-	re := regexp.MustCompile(`(do\(\))?.*don\'t\(\)|do\(\).*(don\'t\(\))?`)
-	m := re.FindAllSubmatch(in, -1)
+func Interpret(in []byte) []byte {
+	var contents []byte
+	var op []byte
+	reDo := regexp.MustCompile(`do\(\)`)
+	reDont := regexp.MustCompile(`don't\(\)`)
+	enabled := true
+	for _, b := range in {
+		op = append(op, b)
+		switch {
+		case reDo.Match(op):
+			enabled = true
+			op = []byte{}
+		case reDont.Match(op):
+			enabled = false
+			op = []byte{}
+		}
 
-	var sections [][]byte
-	for _, sm := range m {
-		sections = append(sections, sm[0])
+		if enabled {
+			contents = append(contents, b)
+		}
 	}
-	return sections
+
+	return contents
 }

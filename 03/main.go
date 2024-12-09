@@ -16,12 +16,10 @@ func main() {
 	}
 
 	secondSum := 0.0
-	for _, s := range Sections(input) {
-		for _, e := range Extract(s) {
-			secondSum += e.Mul()
-		}
+	for _, e := range Extract(Interpret(input)) {
+		secondSum += e.Mul()
 	}
 
 	fmt.Printf("sum: %.f\n", sum)
-	fmt.Printf("sectioned sum: %.f\n", secondSum)
+	fmt.Printf("filtered sum: %.f\n", secondSum)
 }

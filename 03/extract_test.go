@@ -40,12 +40,9 @@ func Test_Extract(t *testing.T) {
 }
 
 func Test_SectionedExtract(t *testing.T) {
-	s := Sections(secondExample)
 	sum := 0.0
-	for _, ss := range s {
-		for _, e := range Extract(ss) {
-			sum += e.Mul()
-		}
+	for _, e := range Extract(Interpret(secondExample)) {
+		sum += e.Mul()
 	}
 	if sum != 48 {
 		t.Error("wrong sum")
