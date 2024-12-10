@@ -54,15 +54,16 @@ func (m Map) Layout() *Layout {
 
 func (l Layout) Improve(logger io.Writer) Layout {
 	ret := l
-	for id, e := range l {
+	for id, e := range ret {
 		if e == -1 {
-			pos, v := l.LastNonEmpty()
-			l[id] = v
-			tmp := l[:pos]
-			if logger != nil {
-				_, _ = logger.Write([]byte(tmp.ToString() + "\n"))
+			pos, v := ret.LastNonEmpty()
+			if pos > id {
+				ret[id] = v
+				ret[pos] = -1
+				if logger != nil {
+					_, _ = logger.Write([]byte(ret.ToString() + "\n"))
+				}
 			}
-			return tmp.Improve(logger)
 		}
 	}
 	return ret

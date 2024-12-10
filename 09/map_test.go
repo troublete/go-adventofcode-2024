@@ -52,7 +52,7 @@ func TestMapLayout(t *testing.T) {
 func TestMapImprove(t *testing.T) {
 	m := MapFromInput(example)
 	l := m.Layout().Improve(os.Stdout)
-	if l.ToString() != "0099811188827773336446555566" {
+	if l.ToString() != "0099811188827773336446555566.............." {
 		t.Error("expected different layout")
 	}
 }
